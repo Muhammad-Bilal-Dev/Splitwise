@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
-import { db } from "../../firebase-config";
+import { db, auth } from "../../firebase-config";
 
 import "./Login.css"
 
@@ -23,17 +24,27 @@ const Login = () => {
   const createUserToFirebaseDB = async (event) => {
     console.log("User Creating")
     event.preventDefault()
-    await addDoc(collection(db, "users"), {
-      name: data.name,
-      phone: data.phone,
-      username: data.username,
-      email: data.email,
-      password: data.password
-    }).then((response) => {
-      console.log("User Created", response)
+
+    await createUserWithEmailAndPassword(
+      auth, data.email, data.password
+    ).then((response) => {
+      addDoc(collection(db, "users"), {
+        name: data.name,
+        phone: data.phone,
+        username: data.username,
+        email: data.email,
+        password: data.password
+      }).then((response) => {
+        console.log("User Created.", response)
+        setData({ name: "", phone: "", username: "", email: "", password: "" });
+      }).catch((error) => {
+        console.log("Error: While Creating user.", error)
+      });
+
+      console.log("Auth User Created.", response)
       setData({ name: "", phone: "", username: "", email: "", password: "" });
     }).catch((error) => {
-      console.log("Error: while creating user.", error.message)
+      console.log("Error: While Creating Auth User.", error)
     });
   }
 
