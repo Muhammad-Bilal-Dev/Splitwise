@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 import { db } from "../../firebase-config";
 import { userContext } from "../../App";
@@ -16,8 +16,8 @@ const Expense = () => {
 
   const getCurrentUserTotalOwe = () => {
     var owe = 0;
-    ledger.map((obj) => {
-      if (obj.borrower_id === currentUser.id && obj.paid_status === 0)
+    ledger.map(obj => {
+      if (obj.borrower_id === currentUser?.id && obj.paid_status === 0)
         owe = owe + +obj.borrowed_amount;
     });
     return owe;
@@ -25,8 +25,8 @@ const Expense = () => {
 
   const getCurrentUserTotalOwed = () => {
     var owed = 0;
-    ledger.map((obj) => {
-      if (obj.payer_id === currentUser.id && obj.paid_status === 0)
+    ledger.map(obj => {
+      if (obj.payer_id === currentUser?.id && obj.paid_status === 0)
         owed = owed + +obj.borrowed_amount;
     });
     return owed;
@@ -37,39 +37,60 @@ const Expense = () => {
   };
 
   const getUserById = (userId) => {
-    return users.filter((obj) => obj.id === userId)[0];
+    return users?.filter(obj => obj?.id === userId)[0];
+  };
+
+  const getExpenseById = (expenseId) => {
+    return expense?.filter(obj => obj.id === expenseId)[0];
   };
 
   const getAllExpenseLedgerByExpenseId = (expenseId) => {
-    return ledger.filter((obj) => obj.expense_id === expenseId);
+    return ledger.filter(obj => obj.expense_id === expenseId);
   };
 
   const getUnpaidExpenseLedgerByExpenseId = (expenseId) => {
     return ledger.filter(
-      (obj) => obj.expense_id === expenseId && obj.paid_status === 0
+      obj => obj.expense_id === expenseId && obj.paid_status === 0
     );
   };
 
   const getSumOfUnpaidExpenseLedgerByExpenseId = (expenseId) => {
     const responseData = getUnpaidExpenseLedgerByExpenseId(expenseId);
     var sum = 0;
-    responseData.map((obj) => (sum = sum + +obj.borrowed_amount));
+    responseData.map(obj => (sum = sum + +obj.borrowed_amount));
     return sum;
   };
 
   const convertStatusToString = (status) => {
     return status === 1 ? "True" : "False";
   };
+  
+  const getOweLedgerOfCurrentUser = () => {
+    return ledger?.filter(
+      obj => obj.borrower_id === currentUser?.id && obj.paid_status === 0
+    );
+  };
+
+  const getOwedLedgerOfCurrentUser = () => {
+    return ledger?.filter(
+      obj => obj.payer_id === currentUser?.id && obj.paid_status === 0
+    );
+  };
+
+  const updateDateFirebase = async (id) => {
+    await updateDoc(doc(db, "expense_ledger", id), {paid_status: 1})
+  }
+
+  const getUserData = async () => {
+    const data = await getDocs(collection(db, "expense"));
+    setExpense(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const ledger_data = await getDocs(collection(db, "expense_ledger"));
+    setLedger(ledger_data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
 
   useEffect(() => {
-    const getUserData = async () => {
-      const data = await getDocs(collection(db, "expense"));
-      setExpense(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      const ledger_data = await getDocs(collection(db, "expense_ledger"));
-      setLedger(ledger_data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
     getUserData();
-  }, []);
+  }, [expense, ledger]);
 
   return (
     <>
@@ -101,6 +122,32 @@ const Expense = () => {
           </div>
         </div>
       </footer>
+
+      <div className="dashboard_expense">
+        <div className="dashboard_expense_left">
+          <h2>YOU OWE</h2>
+          <div>
+            {getOweLedgerOfCurrentUser().map(obj => 
+              <div>
+                <h3>
+                  $ {obj.borrowed_amount} to {getUserById(obj.payer_id).name} ({getExpenseById(obj.expense_id).description})
+                  <button class="btn_settle_up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button>
+                </h3>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="dashboard_expense_right">
+          <h2>YOU ARE OWED</h2>
+          <div>
+            {getOwedLedgerOfCurrentUser().map((obj) => 
+              <div>
+                <h3>$ {obj.borrowed_amount} from {getUserById(obj.borrower_id).name}</h3>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
       <div>
         {expense?.map((expense) => (

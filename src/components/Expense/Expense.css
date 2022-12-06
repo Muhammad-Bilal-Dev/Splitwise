@@ -105,6 +105,7 @@
 
 .dashboard-expense {
   display: flex;
+  margin-top: 20px;
 }
 
 .dashboard-expense > div {
@@ -124,4 +125,18 @@
 
 .dashboard-expense-right {
   color: rgb(112, 196, 112);
+}
+
+.btn_settle_up {
+  border: 0;
+  font-size: 20px;
+  padding: 4px;
+  margin: 0px 8px;
+  cursor: pointer;
+  color: #FFFFFF;
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-decoration: none;
+  box-shadow: rgb(151 65 252 / 20%) 0 15px 30px -5px;
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
 }
