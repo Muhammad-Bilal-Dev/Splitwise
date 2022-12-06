@@ -5,9 +5,11 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebase-config";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
+import LogOut from "./components/Login/LogOut";
 import Users from "./components/Users";
 import Expense from "./components/Expense";
 import CreateExpense from "./components/Expense/CreateExpense";
+import Home from "./components/Home"
 
 export const userContext = createContext();
 
@@ -28,11 +30,13 @@ const App = () => {
     <userContext.Provider value={{ users, setUsers }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navbar />}>
+          <Route path="/" element={<Navbar />}> 
+            <Route path="home" element={<Home />} />
             <Route path="users" element={<Users />} />
             <Route path="create_expense" element={<CreateExpense />} />
             <Route path="show_expense" element={<Expense />} />
             <Route path="login" element={<Login />} />
+            <Route path="logout" element={<LogOut />} />
             <Route path="*" element={<h1>Page Not Found</h1>} />
           </Route>
         </Routes>
