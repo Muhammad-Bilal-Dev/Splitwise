@@ -1,13 +1,19 @@
 import { Outlet, Link } from "react-router-dom";
+import { auth } from "../../firebase-config";
 
 import "./Navbar.css";
 
 const Navbar = () => {
-  const linkList = [
+  const logedInNavItem = [
+    { title: "Expense", path: "/show_expense" },
     { title: "Add Expense", path: "/create_expense" },
-    { title: "Show Expense", path: "/show_expense" },
     { title: "Users", path: "/users" },
-    { title: "Login", path: "/login" },
+    { title: "Logout", path: "/logout" }
+  ];
+
+  const logedOutNavItem = [
+    { title: "Home", path: "/home" },
+    { title: "Login", path: "/login" }
   ];
 
   return (
@@ -20,11 +26,17 @@ const Navbar = () => {
             &#9776;
           </label>
           <div className="menu">
-            {linkList.map((obj, index) => (
-              <Link key={index} to={obj.path}>
-                {obj.title}
-              </Link>
-            ))}
+            {auth.currentUser
+              ? logedInNavItem.map((obj, index) => (
+                  <Link key={index} to={obj.path}>
+                    {obj.title}
+                  </Link>
+                ))
+              : logedOutNavItem.map((obj, index) => (
+                  <Link key={index} to={obj.path}>
+                    {obj.title}
+                  </Link>
+                ))}
           </div>
         </ul>
       </nav>
