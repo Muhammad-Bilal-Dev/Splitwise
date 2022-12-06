@@ -4,19 +4,19 @@ import { signOut } from "firebase/auth";
 
 import { auth } from "../../firebase-config";
 
-const LogOut = () => {
+const Logout = () => {
   const nav = useNavigate();
 
-  useEffect(() => {
-    const logOut = async () => {
-      await signOut(auth);
-      nav("/home");
-    };
+  const logout = async () => {
+    await signOut(auth);
+    nav("/home");
+  };
 
-    logOut();
+  useEffect(() => {
+    logout();
   }, []);
 
   return <></>;
 };
 
-export default LogOut;
+export default Logout;
