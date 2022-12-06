@@ -77,13 +77,13 @@ const CreateExpense = () => {
                 console.log("Created expense ledger", response);
               })
               .catch((error) => {
-                console.log("Error creating expense_ledger", error);
+                console.log("Error: While creating expense_ledger", error);
               });
           }
         }
       })
       .catch((error) => {
-        console.log("Error creating expense", error);
+        console.log("Error: While creating expense", error);
       });
   };
 
@@ -145,9 +145,9 @@ const CreateExpense = () => {
             <h2 className="subtotal">
               Total Bill: {data.totalBill}
               {canBeSubmitFirebase() ? (
-                <span className="can_submit">Can be Submit</span>
+                <span className="can-submit">Can be Submit</span>
               ) : (
-                <span className="can_not_submit">Can not Submit</span>
+                <span className="can-not-submit">Can not Submit</span>
               )}
             </h2>
             <h2 className="subtotal">Shared Bill: {borrowerTotalBill}</h2>
@@ -165,10 +165,10 @@ const CreateExpense = () => {
           </div>
         </div>
       </footer>
-      <div className="form_container">
-        <div className="form_inner_container">
-          <h1 className="form_heading">Add an Expense</h1>
-          <div className="borrower_field">
+      <div className="form-container">
+        <div className="form-inner-container">
+          <h1 className="form-heading">Add an Expense</h1>
+          <div className="borrower-field">
             <Input
               title="Description"
               name="description"
@@ -185,10 +185,10 @@ const CreateExpense = () => {
               placeholder="Total Bill..."
               onChange={changeHandler}
             />
-            <div className="form_field">
+            <div className="form-field">
               <h3 className="">Paid By</h3>
               <select
-                className="form_select"
+                className="form-select"
                 name="Payer Name"
                 onChange={(event) => {
                   setPayerId(event.target.value);
@@ -206,12 +206,12 @@ const CreateExpense = () => {
           <AddBorrower setDataBorrower={setDataBorrower} />
           {borrowers?.map(borrower => (
             <div key={borrower.id}>
-              <div className="form_field">
+              <div className="form-field">
                 <h2 className="">{borrower.name}</h2>
                 <input
                   value={borrower.loan}
                   type="number"
-                  className="form_input"
+                  className="form-input"
                   placeholder="Total Bill..."
                   onChange={(event) => AddBorrowerBill(event, borrower.id)}
                 />

@@ -1,9 +1,9 @@
-.form_container {
+.form-container {
   display: flex;
   justify-content: center;
 }
 
-.form_inner_container {
+.form-inner-container {
   background-color: rgb(11, 22, 58);
   border: 8px solid white;
   width: fit-content;
@@ -11,17 +11,17 @@
   margin-top: 20px;
 }
 
-.form_field {
+.form-field {
   margin: 10px;
 }
 
-.form_heading {
+.form-heading {
   padding-bottom: 20px;
   text-align: center;
   font-size: 47px;
 }
 
-.form_input {
+.form-input {
   width: 300px;
   font-size: 18px;
   border: 1px solid white;
@@ -31,18 +31,16 @@
   margin: 10px 0;
   padding: 10px 20px;
   appearance: none;
-
   background-color: rgba(0, 0, 0, 0.2);
   color: white;
-
 }
 
-.form_input:focus {
+.form-input:focus {
   background-color: white;
   color: black;
 }
 
-.form_select {
+.form-select {
   width: 300px;
   font-size: 18px;
   border-radius: 1px solid white;
@@ -52,34 +50,32 @@
   color: white;
 }
 
-.form_select:focus {
+.form-select:focus {
   background-color: white;
   color: black;
 }
 
-.borrower_field {
+.borrower-field {
   display: flex;
 }
 
-.btn_form {
+.btn-form {
   margin-top: 25px;
 }
 
-.can_submit {
+.can-submit {
   background-color: rgb(186, 251, 195);
   padding: 15px;
   margin-left: 180px;
   border-radius: 100%;
 }
 
-.can_not_submit {
+.can-not-submit {
   background-color: rgb(251, 219, 219);
   padding: 15px;
   margin-left: 180px;
   border-radius: 100%;
-  
 }
-
 
 .button-73 {
   appearance: none;
@@ -107,12 +103,11 @@
   touch-action: manipulation;
 }
 
-
-.dashboard_expense {
+.dashboard-expense {
   display: flex;
 }
 
-.dashboard_expense>div {
+.dashboard-expense > div {
   flex: 1;
   padding: auto;
   display: flex;
@@ -123,10 +118,10 @@
   border: 4px solid rgb(245, 245, 245);
 }
 
-.dashboard_expense_left {
+.dashboard-expense-left {
   color: rgb(212, 122, 122);
 }
 
-.dashboard_expense_right {
+.dashboard-expense-right {
   color: rgb(112, 196, 112);
 }
