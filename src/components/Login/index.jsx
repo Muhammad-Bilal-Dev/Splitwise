@@ -75,32 +75,30 @@ const Login = () => {
   }
 
   return (
-    <>
-      <div className="main_head">
-        <div className="main">  	
-          <input type="checkbox" id="chk" aria-hidden="true" />
-            <div className="signup">
-              <form onSubmit={ createUserToFirebaseDB }>
-                <label htmlFor="chk" aria-hidden="true">Sign up</label>
-                <input onChange={ changeHandlerData } value={ data.name } type="text" name="name" placeholder="Name" required="" />
-                <input onChange={ changeHandlerData } value={ data.phone } type="text" name="phone" placeholder="Phone" required="" />
-                <input onChange={ changeHandlerData } value={ data.username } type="text" name="username" placeholder="User name" required="" />
-                <input onChange={ changeHandlerData } value={ data.email } type="email" name="email" placeholder="Email" required="" />
-                <input onChange={ changeHandlerData } value={ data.password } type="password" name="password" placeholder="Password" required="" />
-                <button typye="submit">Sign up</button>
-              </form>
-            </div>
-            <div className="login">
-              <form onSubmit={ loginAuthUser }>
-                <label htmlFor="chk" aria-hidden="true">Login</label>
-                <input onChange={ changeHandlerLoginData } value={loginData.email} type="email" name="email" placeholder="Email" required="" />
-                <input onChange={ changeHandlerLoginData } value={loginData.password} type="password" name="password" placeholder="Password" required="" />
-                <button>Login</button>
-              </form>
-            </div>
-        </div>
+    <div className="main-head">
+      <div className="main">  	
+        <input type="checkbox" id="chk" aria-hidden="true" />
+          <div className="signup">
+            <form>
+              <label htmlFor="chk" aria-hidden="true">Sign up</label>
+              <input type="text" name="name" placeholder="Name" required="" />
+              <input type="text" name="phone" placeholder="Phone" required="" />
+              <input type="text" name="username" placeholder="User name" required="" />
+              <input type="email" name="email" placeholder="Email" required="" />
+              <input type="password" name="pswd" placeholder="Password" required="" />
+              <button>Sign up</button>
+            </form>
+          </div>
+          <div className="login">
+            <form>
+              <label htmlFor="chk" aria-hidden="true">Login</label>
+              <input type="email" name="email" placeholder="Email" required="" />
+              <input type="password" name="pswd" placeholder="Password" required="" />
+              <button>Login</button>
+            </form>
+          </div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -1,9 +1,9 @@
 import "../Expense/Expense.css";
 
 const Input = ({ title, ...rest }) => (
-  <div className="form_field">
+  <div className="form-field">
     <h3 className="">{title}</h3>
-    <input className="form_input" {...rest} />
+    <input className="form-input" {...rest} />
   </div>
 );
 

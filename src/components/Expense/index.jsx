@@ -110,12 +110,12 @@ const Expense = () => {
           </div>
         </div>
         <div className="container clearfix">
-          <div className="dashboard_expense">
-            <div className="dashboard_expense_left">
+          <div className="dashboard-expense">
+            <div className="dashboard-expense-left">
               <h2>YOU OWE</h2>
               <h3>${getCurrentUserTotalOwe()}</h3>
             </div>
-            <div className="dashboard_expense_right">
+            <div className="dashboard-expense-right">
               <h2>YOU ARE OWED</h2>
               <h3>${getCurrentUserTotalOwed()}</h3>
             </div>
