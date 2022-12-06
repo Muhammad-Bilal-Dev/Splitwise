@@ -85,13 +85,14 @@ const Expense = () => {
     await updateDoc(doc(db, "expense_ledger", id), {paid_status: 1})
   }
 
+  const getUserData = async () => {
+    const data = await getDocs(collection(db, "expense"));
+    setExpense(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const ledger_data = await getDocs(collection(db, "expense_ledger"));
+    setLedger(ledger_data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
   useEffect(() => {
-    const getUserData = async () => {
-      const data = await getDocs(collection(db, "expense"));
-      setExpense(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      const ledger_data = await getDocs(collection(db, "expense_ledger"));
-      setLedger(ledger_data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
     getUserData();
   }, [expense, ledger]);
 

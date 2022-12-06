@@ -1,24 +1,37 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 import { db, auth } from "../../firebase-config";
 
 import "./Login.css"
 
 const Login = () => {
-  const [ data, setData ] = useState(
-    {
-      name: "",
-      phone: "",
-      username: "",
-      email: "",
-      password: ""
-    });
+  const [ data, setData ] = useState({
+    auth_user_id: "",
+    name: "",
+    phone: "",
+    username: "",
+    email: "",
+    password: ""
+  });
+
+  const [ loginData, setLoginData ] = useState({
+    email: "",
+    password: "",
+  });
+
+  const nav = useNavigate();
 
   const changeHandlerData = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
+  };
+
+  const changeHandlerLoginData = (event) => {
+    const { name, value } = event.target;
+    setLoginData({ ...loginData, [name]: value });
   };
 
   const createUserToFirebaseDB = async (event) => {
@@ -29,6 +42,7 @@ const Login = () => {
       auth, data.email, data.password
     ).then((response) => {
       addDoc(collection(db, "users"), {
+        auth_user_id: response.user.uid,
         name: data.name,
         phone: data.phone,
         username: data.username,
@@ -36,7 +50,7 @@ const Login = () => {
         password: data.password
       }).then((response) => {
         console.log("User Created.", response)
-        setData({ name: "", phone: "", username: "", email: "", password: "" });
+        setData({ auth_user_id: "", name: "", phone: "", username: "", email: "", password: "" });
       }).catch((error) => {
         console.log("Error: While Creating user.", error)
       });
@@ -46,6 +60,18 @@ const Login = () => {
     }).catch((error) => {
       console.log("Error: While Creating Auth User.", error)
     });
+  }
+
+  const loginAuthUser = async (event) => {
+    event.preventDefault()
+    await signInWithEmailAndPassword(
+      auth, loginData.email, loginData.password
+    ).then((response) => {
+      console.log("Successfully Loged In.", response)
+      nav("/show_expense");
+    }).catch((error) => {
+      console.log("Error: While Login.", error)
+    })
   }
 
   return (
@@ -65,10 +91,10 @@ const Login = () => {
               </form>
             </div>
             <div className="login">
-              <form>
+              <form onSubmit={ loginAuthUser }>
                 <label htmlFor="chk" aria-hidden="true">Login</label>
-                <input type="email" name="email" placeholder="Email" required="" />
-                <input type="password" name="pswd" placeholder="Password" required="" />
+                <input onChange={ changeHandlerLoginData } value={loginData.email} type="email" name="email" placeholder="Email" required="" />
+                <input onChange={ changeHandlerLoginData } value={loginData.password} type="password" name="password" placeholder="Password" required="" />
                 <button>Login</button>
               </form>
             </div>
