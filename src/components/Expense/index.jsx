@@ -16,7 +16,7 @@ const Expense = () => {
 
   const getCurrentUserTotalOwe = () => {
     var owe = 0;
-    ledger.map((obj) => {
+    ledger.map(obj => {
       if (obj.borrower_id === currentUser?.id && obj.paid_status === 0)
         owe = owe + +obj.borrowed_amount;
     });
@@ -25,7 +25,7 @@ const Expense = () => {
 
   const getCurrentUserTotalOwed = () => {
     var owed = 0;
-    ledger.map((obj) => {
+    ledger.map(obj => {
       if (obj.payer_id === currentUser?.id && obj.paid_status === 0)
         owed = owed + +obj.borrowed_amount;
     });
@@ -45,19 +45,19 @@ const Expense = () => {
   };
 
   const getAllExpenseLedgerByExpenseId = (expenseId) => {
-    return ledger.filter((obj) => obj.expense_id === expenseId);
+    return ledger.filter(obj => obj.expense_id === expenseId);
   };
 
   const getUnpaidExpenseLedgerByExpenseId = (expenseId) => {
     return ledger.filter(
-      (obj) => obj.expense_id === expenseId && obj.paid_status === 0
+      obj => obj.expense_id === expenseId && obj.paid_status === 0
     );
   };
 
   const getSumOfUnpaidExpenseLedgerByExpenseId = (expenseId) => {
     const responseData = getUnpaidExpenseLedgerByExpenseId(expenseId);
     var sum = 0;
-    responseData.map((obj) => (sum = sum + +obj.borrowed_amount));
+    responseData.map(obj => (sum = sum + +obj.borrowed_amount));
     return sum;
   };
 
@@ -67,17 +67,13 @@ const Expense = () => {
   
   const getOweLedgerOfCurrentUser = () => {
     return ledger?.filter(
-      obj => {
-        return obj.borrower_id === currentUser?.id && obj.paid_status === 0
-      }
+      obj => obj.borrower_id === currentUser?.id && obj.paid_status === 0
     );
   };
 
   const getOwedLedgerOfCurrentUser = () => {
     return ledger?.filter(
-      obj => {
-        return obj.payer_id === currentUser?.id && obj.paid_status === 0
-      }
+      obj => obj.payer_id === currentUser?.id && obj.paid_status === 0
     );
   };
 
