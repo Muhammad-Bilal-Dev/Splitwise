@@ -10,11 +10,15 @@ import Users from "./components/Users";
 import Expense from "./components/Expense";
 import CreateExpense from "./components/Expense/CreateExpense";
 import Home from "./components/Home"
+import PageNotFound from "./components/Error/PageNotFount";
 
 export const userContext = createContext();
+export const currentUserAuthIdContext = createContext();
 
 const App = () => {
   const [users, setUsers] = useState([]);
+  const [currentUserAuthId, setCurrentUserAuthId] = useState('');
+
   const usersCollectionRef = collection(db, "users");
 
   const getUserData = async () => {
@@ -28,19 +32,30 @@ const App = () => {
 
   return (
     <userContext.Provider value={{ users, setUsers }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navbar />}> 
-            <Route path="home" element={<Home />} />
-            <Route path="users" element={<Users />} />
-            <Route path="create_expense" element={<CreateExpense />} />
-            <Route path="show_expense" element={<Expense />} />
-            <Route path="login" element={<Login />} />
-            <Route path="logout" element={<Logout />} />
-            <Route path="*" element={<h1>Page Not Found</h1>} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <currentUserAuthIdContext.Provider
+        value={{ currentUserAuthId, setCurrentUserAuthId }}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Navbar />}>
+              {currentUserAuthId ? (
+                <>
+                  <Route path="users" element={<Users />} />
+                  <Route path="create_expense" element={<CreateExpense />} />
+                  <Route path="show_expense" element={<Expense />} />
+                  <Route path="logout" element={<Logout />} />
+                </>
+              ) : (
+                <>
+                  <Route path="login" element={<Login />} />
+                </>
+              )}
+              <Route index path="home" element={<Home />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </currentUserAuthIdContext.Provider>
     </userContext.Provider>
   );
 };

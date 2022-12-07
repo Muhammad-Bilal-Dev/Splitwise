@@ -4,6 +4,7 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 
 import { db } from "../../firebase-config";
 import { userContext } from "../../App";
+import { currentUserAuthIdContext } from "../../App";
 
 import "../Users/User.css";
 
@@ -12,10 +13,16 @@ const Expense = () => {
   const [ledger, setLedger] = useState([]);
 
   const { users } = useContext(userContext);
-  const [currentUser, setCurrentUser] = useState(users[0]);
+  const { currentUserAuthId } = useContext(currentUserAuthIdContext);
+
+  const [currentUser, setCurrentUser] = useState({});
+
+  useEffect(() => {
+    setCurrentUser(getUserByCurrentUserAuthId(currentUserAuthId));
+  }, [currentUserAuthId])
 
   const getCurrentUserTotalOwe = () => {
-    var owe = 0;
+    let owe = 0;
     ledger.map(obj => {
       if (obj.borrower_id === currentUser?.id && obj.paid_status === 0)
         owe = owe + +obj.borrowed_amount;
@@ -24,7 +31,7 @@ const Expense = () => {
   };
 
   const getCurrentUserTotalOwed = () => {
-    var owed = 0;
+    let owed = 0;
     ledger.map(obj => {
       if (obj.payer_id === currentUser?.id && obj.paid_status === 0)
         owed = owed + +obj.borrowed_amount;
@@ -39,6 +46,10 @@ const Expense = () => {
   const getUserById = (userId) => {
     return users?.filter(obj => obj?.id === userId)[0];
   };
+
+  const getUserByCurrentUserAuthId = (authId) => {
+    return users?.filter(obj => obj?.auth_user_id === authId)[0];
+  }
 
   const getExpenseById = (expenseId) => {
     return expense?.filter(obj => obj.id === expenseId)[0];
@@ -56,7 +67,7 @@ const Expense = () => {
 
   const getSumOfUnpaidExpenseLedgerByExpenseId = (expenseId) => {
     const responseData = getUnpaidExpenseLedgerByExpenseId(expenseId);
-    var sum = 0;
+    let sum = 0;
     responseData.map(obj => (sum = sum + +obj.borrowed_amount));
     return sum;
   };
@@ -79,13 +90,13 @@ const Expense = () => {
 
   const updateDateFirebase = async (id) => {
     await updateDoc(doc(db, "expense_ledger", id), {paid_status: 1})
-  }
+  };
 
   const getUserData = async () => {
     const data = await getDocs(collection(db, "expense"));
-    setExpense(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setExpense(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
     const ledger_data = await getDocs(collection(db, "expense_ledger"));
-    setLedger(ledger_data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setLedger(ledger_data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
   };
 
   useEffect(() => {
@@ -123,24 +134,24 @@ const Expense = () => {
         </div>
       </footer>
 
-      <div className="dashboard_expense">
-        <div className="dashboard_expense_left">
+      <div className="dashboard-expense">
+        <div className="dashboard-expense-left">
           <h2>YOU OWE</h2>
           <div>
             {getOweLedgerOfCurrentUser().map(obj => 
               <div>
                 <h3>
                   $ {obj.borrowed_amount} to {getUserById(obj.payer_id).name} ({getExpenseById(obj.expense_id).description})
-                  <button class="btn_settle_up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button>
+                  <button className="btn-settle-up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button>
                 </h3>
               </div>
             )}
           </div>
         </div>
-        <div className="dashboard_expense_right">
+        <div className="dashboard-expense-right">
           <h2>YOU ARE OWED</h2>
           <div>
-            {getOwedLedgerOfCurrentUser().map((obj) => 
+            {getOwedLedgerOfCurrentUser().map(obj => 
               <div>
                 <h3>$ {obj.borrowed_amount} from {getUserById(obj.borrower_id).name}</h3>
               </div>
@@ -150,7 +161,7 @@ const Expense = () => {
       </div>
 
       <div>
-        {expense?.map((expense) => (
+        {expense?.map(expense => (
           <div key={expense.id}>
             <div className="container">
               <section id="cart">
@@ -168,7 +179,7 @@ const Expense = () => {
                     Total Owed: $
                     {getSumOfUnpaidExpenseLedgerByExpenseId(expense.id)}
                     {getAllExpenseLedgerByExpenseId(expense.id).map(
-                      (expense_ledger) => (
+                      expense_ledger => (
                         <div key={expense_ledger.id}>
                           <b>Owed:</b> ${expense_ledger.borrowed_amount} from{" "}
                           {getUserById(expense_ledger.borrower_id)?.name}

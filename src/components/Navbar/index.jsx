@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import { Outlet, Link } from "react-router-dom";
-import { auth } from "../../firebase-config";
 
 import "./Navbar.css";
+import { currentUserAuthIdContext } from "../../App";
+
 
 const Navbar = () => {
   const logedInNavItem = [
@@ -16,17 +18,19 @@ const Navbar = () => {
     { title: "Login", path: "/login" }
   ];
 
+  const { currentUserAuthId } = useContext(currentUserAuthIdContext)
+
   return (
     <>
       <nav className="navbar">
-        <div className="logo">SPLITWISE</div>
+        <Link className="logo" to="/home">SPLITWISE</Link>
         <ul className="nav-links">
           <input type="checkbox" id="checkbox_toggle" />
           <label htmlFor="checkbox_toggle" className="hamburger">
             &#9776;
           </label>
           <div className="menu">
-            {auth.currentUser
+            {currentUserAuthId
               ? logedInNavItem.map((obj, index) => (
                   <Link key={index} to={obj.path}>
                     {obj.title}

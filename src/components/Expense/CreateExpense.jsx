@@ -75,6 +75,7 @@ const CreateExpense = () => {
             })
               .then((response) => {
                 console.log("Created expense ledger", response);
+                emptyAllStates()
               })
               .catch((error) => {
                 console.log("Error: While creating expense_ledger", error);

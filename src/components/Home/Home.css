@@ -1,0 +1,17 @@
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;  
+  height: 80vh;
+}
+
+.home-logo {
+  margin: 20px;
+  width: 150px;
+}
+
+.home-heading {
+  font-size: 50px;
+  font-family: serif;
+}
