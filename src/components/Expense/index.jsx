@@ -135,28 +135,41 @@ const Expense = () => {
       </footer>
 
       <div className="dashboard-expense">
-        <div className="dashboard-expense-left">
+        <div className="dashboard-expense_board">
           <h2>YOU OWE</h2>
-          <div>
+          <table>
+            <tr>
+              <th>Description</th>
+              <th>Owe to</th>
+              <th>Amount</th>
+              <th>Sent</th>
+            </tr>
             {getOweLedgerOfCurrentUser().map(obj => 
-              <div>
-                <h3>
-                  $ {obj.borrowed_amount} to {getUserById(obj.payer_id).name} ({getExpenseById(obj.expense_id).description})
-                  <button className="btn-settle-up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button>
-                </h3>
-              </div>
+              <tr>
+                <td>{getExpenseById(obj.expense_id).description}</td>
+                <td>{getUserById(obj.payer_id).name}</td>
+                <td>${obj.borrowed_amount}</td>
+                <td><button className="btn-settle-up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button></td>
+              </tr>
             )}
-          </div>
+          </table>
         </div>
-        <div className="dashboard-expense-right">
+        <div className="dashboard_expense_board">
           <h2>YOU ARE OWED</h2>
-          <div>
+          <table>
+            <tr>
+              <th>Description</th>
+              <th>Owed</th>
+              <th>Amount</th>
+            </tr>
             {getOwedLedgerOfCurrentUser().map(obj => 
-              <div>
-                <h3>$ {obj.borrowed_amount} from {getUserById(obj.borrower_id).name}</h3>
-              </div>
+              <tr>
+                <td>{getExpenseById(obj.expense_id).description}</td>
+                <td>{getUserById(obj.borrower_id).name}</td>
+                <td>${obj.borrowed_amount}</td>
+              </tr>
             )}
-          </div>
+          </table>
         </div>
       </div>
 

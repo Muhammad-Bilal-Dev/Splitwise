@@ -15,9 +15,9 @@ const Users = () => {
           </div>
           <div className="right">
             <h1 className="total">
-              Total: <span>{users.length}</span>
+              Total User: <span>{users.length}</span>
             </h1>
-            <p className="btn">Create User</p>
+            <p className="btn">Search</p>
           </div>
         </div>
       </footer>
@@ -34,7 +34,7 @@ const Users = () => {
                   </header>
                   <div className="content">
                     <h1>{user.name}</h1>
-                    id: {user.id}A good person is someone who gets paid to work
+                    A good person is someone who gets paid to work
                     for a person or company. Workers don't need to work full
                     time to be considered employees—they simply need to be paid
                     to work by an employer (the person or business that pays
