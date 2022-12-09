@@ -5,6 +5,7 @@ import { db } from "../../firebase-config";
 import AddBorrower from "./AddBorrower";
 import { userContext } from "../../App";
 import Input from "../Elements/Input";
+import Toast from "../tostify/Toast";
 
 import "./Expense.css";
 
@@ -25,15 +26,15 @@ const CreateExpense = () => {
 
   const canSubmitFirebase = () => {
     if (data.description === "") {
-      alert("Description can not be empty");
+      Toast("danger" ,"Description can not be empty")
     } else if (data.totalBill <= 0 || data.totalBill === "") {
-      alert("Total Bill Invalid");
+      Toast("danger" ,"Total Bill Invalid")
     } else if (payerId === "") {
-      alert("Please Select Paid by");
+      Toast("danger" ,"Please Select Paid by")
     } else if (+data.totalBill !== borrowerTotalBill) {
-      alert("Total Bill shuold be equal to Shared Bill");
+      Toast("danger" ,"Total Bill shuold be equal to Shared Bill")
     } else {
-      console.log("Local checks passed.");
+      Toast("success" ,"Local checks passed")
       setDataFirebase();
     }
   };
@@ -74,16 +75,19 @@ const CreateExpense = () => {
               paid_status: 0,
             })
               .then((response) => {
+                Toast("success" ,"Successfully expense created");
                 console.log("Created expense ledger", response);
                 emptyAllStates()
               })
               .catch((error) => {
+                Toast("danger", error.message)
                 console.log("Error: While creating expense_ledger", error);
               });
           }
         }
       })
       .catch((error) => {
+        Toast("danger", error.message)
         console.log("Error: While creating expense", error);
       });
   };
@@ -102,10 +106,10 @@ const CreateExpense = () => {
         const borrower = users.filter((obj) => obj.id === borrowerId);
         setBorrowers([...borrowers, ...borrower]);
       } else {
-        alert("This friend already added.");
+        Toast("danger" , "This friend already added.")
       }
     } else {
-      alert("Friend can not blank.");
+      Toast("danger" , "Friend can not blank.")
     }
   };
 
@@ -140,6 +144,8 @@ const CreateExpense = () => {
 
   return (
     <>
+      <div>
+      </div>
       <footer id="site-footer">
         <div className="container clearfix">
           <div className="left">

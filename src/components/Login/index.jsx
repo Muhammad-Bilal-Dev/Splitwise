@@ -7,6 +7,7 @@ import { db, auth } from "../../firebase-config";
 import { currentUserAuthIdContext } from "../../App";
 
 import "./Login.css"
+import Toast from "../tostify/Toast";
 
 const Login = () => {
   const { setCurrentUserAuthId } = useContext(currentUserAuthIdContext);
@@ -38,7 +39,6 @@ const Login = () => {
   };
 
   const createUserToFirebaseDB = async (event) => {
-    console.log("User Creating")
     event.preventDefault()
 
     await createUserWithEmailAndPassword(
@@ -52,15 +52,15 @@ const Login = () => {
         email: data.email,
         password: data.password
       }).then((response) => {
+        Toast("success", "User Created.");
         console.log("User Created.", response)
         setData({ auth_user_id: "", name: "", phone: "", username: "", email: "", password: "" });
       }).catch((error) => {
+        Toast("danger", error.message);
         console.log("Error: While Creating user.", error)
       });
-
-      console.log("Auth User Created.", response)
-      setData({ name: "", phone: "", username: "", email: "", password: "" });
     }).catch((error) => {
+      Toast("danger", error.message);
       console.log("Error: While Creating Auth User.", error)
     });
   }
@@ -70,11 +70,12 @@ const Login = () => {
     await signInWithEmailAndPassword(
       auth, loginData.email, loginData.password
     ).then((response) => {
-      console.log("Successfully Loged In.", response)
-      setCurrentUserAuthId(response.user.uid)
+      Toast("success", "Successfully Loged In");
+      console.log("Successfully Loged In.", response);
+      setCurrentUserAuthId(response.user.uid);
       nav("/show_expense");
     }).catch((error) => {
-      alert(error.message)
+      Toast("danger", error.message);
       console.log("Error: While Login.", error)
     })
   }

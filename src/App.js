@@ -11,6 +11,7 @@ import Expense from "./components/Expense";
 import CreateExpense from "./components/Expense/CreateExpense";
 import Home from "./components/Home"
 import PageNotFound from "./components/Error/PageNotFount";
+import ToastComponent from "./components/tostify/ToastComponent";
 
 export const userContext = createContext();
 export const currentUserAuthIdContext = createContext();
@@ -30,7 +31,7 @@ const App = () => {
     getUserData();
   }, []);
 
-  return (
+  return (<>
     <userContext.Provider value={{ users, setUsers }}>
       <currentUserAuthIdContext.Provider
         value={{ currentUserAuthId, setCurrentUserAuthId }}
@@ -57,7 +58,8 @@ const App = () => {
         </BrowserRouter>
       </currentUserAuthIdContext.Provider>
     </userContext.Provider>
-  );
+    {ToastComponent()}
+  </>);
 };
 
 export default App;
