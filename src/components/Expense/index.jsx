@@ -5,6 +5,7 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { userContext } from "../../App";
 import { currentUserAuthIdContext } from "../../App";
+import Toast from "../tostify/Toast";
 
 import "../Users/User.css";
 
@@ -90,6 +91,8 @@ const Expense = () => {
 
   const updateDateFirebase = async (id) => {
     await updateDoc(doc(db, "expense_ledger", id), {paid_status: 1})
+      .then(response => Toast("success", "Successfully Suttle up."))
+      .catch(error => Toast("danger", error.message))
   };
 
   const getUserData = async () => {
