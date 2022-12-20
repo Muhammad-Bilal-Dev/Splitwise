@@ -2,9 +2,11 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from 'react-redux';
 
 import { db, auth } from "../../firebase-config";
 import { currentUserAuthIdContext } from "../../App";
+import { fetchUsers } from "../Users/userSlice";
 
 import "./Login.css"
 import Toast from "../tostify/Toast";
@@ -62,12 +64,15 @@ const Login = () => {
     });
   }
 
+  const dispatch = useDispatch();
+
   const loginAuthUser = async (event) => {
     event.preventDefault()
     await signInWithEmailAndPassword(
       auth, loginData.email, loginData.password
     ).then((response) => {
       Toast("success", "Successfully Loged In");
+      dispatch(fetchUsers());
       setCurrentUserAuthId(response.user.uid);
       nav("/show_expense");
     }).catch((error) => {

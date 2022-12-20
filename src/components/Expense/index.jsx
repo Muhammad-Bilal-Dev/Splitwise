@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 import { db } from "../../firebase-config";
-import { userContext } from "../../App";
 import { currentUserAuthIdContext } from "../../App";
 import Toast from "../tostify/Toast";
 
@@ -13,7 +13,7 @@ const Expense = () => {
   const [expense, setExpense] = useState([]);
   const [ledger, setLedger] = useState([]);
 
-  const { users } = useContext(userContext);
+  const users = useSelector(state => state.user).users;
   const { currentUserAuthId } = useContext(currentUserAuthIdContext);
 
   const [currentUser, setCurrentUser] = useState({});
@@ -148,7 +148,7 @@ const Expense = () => {
               <th>Sent</th>
             </tr>
             {getOweLedgerOfCurrentUser().map(obj => 
-              <tr>
+              <tr key={obj.id}>
                 <td>{getExpenseById(obj.expense_id).description}</td>
                 <td>{getUserById(obj.payer_id).name}</td>
                 <td>${obj.borrowed_amount}</td>

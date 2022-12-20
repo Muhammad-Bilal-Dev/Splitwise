@@ -1,9 +1,9 @@
 import "./User.css";
-import { useContext } from "react";
-import { userContext } from "../../App";
+import { useSelector } from "react-redux";
 
 const Users = () => {
-  const { users } = useContext(userContext);
+  const users = useSelector(state => state.user).users;
+
   return (
     <>
       <footer id="site-footer">

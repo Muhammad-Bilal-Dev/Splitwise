@@ -1,19 +1,21 @@
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
 
 import { auth } from "../../firebase-config";
-import { currentUserAuthIdContext, userContext } from "../../App";
+import { currentUserAuthIdContext } from "../../App";
+import { setEmpty } from "../Users/userSlice";
 
 const Logout = () => {
   const nav = useNavigate();
 
-  const { setUsers } = useContext(userContext);
   const { setCurrentUserAuthId } = useContext(currentUserAuthIdContext);
+  const dispatch = useDispatch();
 
   const logout = async () => {
     await signOut(auth);
-    setUsers([]);
+    dispatch(setEmpty());
     setCurrentUserAuthId("");
     nav("/home");
   };
