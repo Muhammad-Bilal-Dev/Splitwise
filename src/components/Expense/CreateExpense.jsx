@@ -63,7 +63,6 @@ const CreateExpense = () => {
       date: new Date().toLocaleString(),
     })
       .then((response) => {
-        console.log("Created expense", response);
         const expense_id = response.id;
         for (let i = 0; i < borrowers.length; i++) {
           if (payerId !== borrowers[i].id) {
@@ -76,19 +75,16 @@ const CreateExpense = () => {
             })
               .then((response) => {
                 Toast("success" ,"Successfully expense created");
-                console.log("Created expense ledger", response);
                 emptyAllStates()
               })
               .catch((error) => {
                 Toast("danger", error.message)
-                console.log("Error: While creating expense_ledger", error);
               });
           }
         }
       })
       .catch((error) => {
         Toast("danger", error.message)
-        console.log("Error: While creating expense", error);
       });
   };
 

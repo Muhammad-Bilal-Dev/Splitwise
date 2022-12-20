@@ -53,15 +53,12 @@ const Login = () => {
         password: data.password
       }).then((response) => {
         Toast("success", "User Created.");
-        console.log("User Created.", response)
         setData({ auth_user_id: "", name: "", phone: "", username: "", email: "", password: "" });
       }).catch((error) => {
         Toast("danger", error.message);
-        console.log("Error: While Creating user.", error)
       });
     }).catch((error) => {
       Toast("danger", error.message);
-      console.log("Error: While Creating Auth User.", error)
     });
   }
 
@@ -71,12 +68,10 @@ const Login = () => {
       auth, loginData.email, loginData.password
     ).then((response) => {
       Toast("success", "Successfully Loged In");
-      console.log("Successfully Loged In.", response);
       setCurrentUserAuthId(response.user.uid);
       nav("/show_expense");
     }).catch((error) => {
       Toast("danger", error.message);
-      console.log("Error: While Login.", error)
     })
   }
 

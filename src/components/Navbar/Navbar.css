@@ -21,7 +21,7 @@ li {
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background-color: rgb(11, 11, 36);
+  background-color: #0b0b24;
   color: #fff;
 }
 
@@ -41,7 +41,7 @@ li {
 }
 
 .menu a:hover {
-  background-color: rgb(25, 35, 109);
+  background-color: #19236d;
   border-radius: 5px;
   transition: 0.3s ease;
 }
@@ -55,7 +55,7 @@ li {
 }
 
 .dropdown {
-  background-color: rgb(20, 26, 75);
+  background-color: #141a4b;
   padding: 1em 0;
   position: absolute;
   display: none;
@@ -95,7 +95,7 @@ input[type=checkbox] {
   .menu {
     display: none;
     position: absolute;
-    background-color: rgb(0, 104, 104);
+    background-color: #006868;
     right: 0;
     left: 0;
     text-align: center;
