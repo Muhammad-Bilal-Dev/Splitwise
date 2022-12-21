@@ -1,10 +1,9 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 import { db } from "../../firebase-config";
-import { currentUserAuthIdContext } from "../../App";
 import Toast from "../tostify/Toast";
 
 import "../Users/User.css";
@@ -14,13 +13,13 @@ const Expense = () => {
   const [ledger, setLedger] = useState([]);
 
   const users = useSelector(state => state.user).users;
-  const { currentUserAuthId } = useContext(currentUserAuthIdContext);
+  const currentUserAuthId = useSelector(state => state.currentUser).currentUserAuthId;
 
   const [currentUser, setCurrentUser] = useState({});
 
   useEffect(() => {
     setCurrentUser(getUserByCurrentUserAuthId(currentUserAuthId));
-  }, [currentUserAuthId])
+  }, [currentUserAuthId, users])
 
   const getCurrentUserTotalOwe = () => {
     let owe = 0;
@@ -141,37 +140,45 @@ const Expense = () => {
         <div className="dashboard-expense_board">
           <h2>YOU OWE</h2>
           <table>
-            <tr>
-              <th>Description</th>
-              <th>Owe to</th>
-              <th>Amount</th>
-              <th>Sent</th>
-            </tr>
-            {getOweLedgerOfCurrentUser().map(obj => 
-              <tr key={obj.id}>
-                <td>{getExpenseById(obj.expense_id).description}</td>
-                <td>{getUserById(obj.payer_id).name}</td>
-                <td>${obj.borrowed_amount}</td>
-                <td><button className="btn-settle-up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button></td>
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Owe to</th>
+                <th>Amount</th>
+                <th>Sent</th>
               </tr>
-            )}
+            </thead>
+            <tbody>
+              {getOweLedgerOfCurrentUser().map(obj => 
+                <tr key={obj.id}>
+                  <td>{getExpenseById(obj.expense_id).description}</td>
+                  <td>{getUserById(obj.payer_id).name}</td>
+                  <td>${obj.borrowed_amount}</td>
+                  <td><button className="btn-settle-up" onClick={() => updateDateFirebase(obj.id)}>Settle-up</button></td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
         <div className="dashboard_expense_board">
           <h2>YOU ARE OWED</h2>
           <table>
-            <tr>
-              <th>Description</th>
-              <th>Owed</th>
-              <th>Amount</th>
-            </tr>
-            {getOwedLedgerOfCurrentUser().map(obj => 
+            <thead>
               <tr>
-                <td>{getExpenseById(obj.expense_id).description}</td>
-                <td>{getUserById(obj.borrower_id).name}</td>
-                <td>${obj.borrowed_amount}</td>
+                <th>Description</th>
+                <th>Owed</th>
+                <th>Amount</th>
               </tr>
-            )}
+            </thead>
+            <tbody>
+              {getOwedLedgerOfCurrentUser().map(obj => 
+                <tr>
+                  <td>{getExpenseById(obj.expense_id).description}</td>
+                  <td>{getUserById(obj.borrower_id).name}</td>
+                  <td>${obj.borrowed_amount}</td>
+                </tr>
+              )}
+            </tbody>
           </table>
         </div>
       </div>

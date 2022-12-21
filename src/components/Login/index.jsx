@@ -1,19 +1,17 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from 'react-redux';
 
 import { db, auth } from "../../firebase-config";
-import { currentUserAuthIdContext } from "../../App";
 import { fetchUsers } from "../Users/userSlice";
-
-import "./Login.css"
+import { setCurrentUserAuthId } from "../Users/currentUserSlice";
 import Toast from "../tostify/Toast";
 
-const Login = () => {
-  const { setCurrentUserAuthId } = useContext(currentUserAuthIdContext);
+import "./Login.css"
 
+const Login = () => {  
   const [ data, setData ] = useState({
     auth_user_id: "",
     name: "",
@@ -73,7 +71,7 @@ const Login = () => {
     ).then((response) => {
       Toast("success", "Successfully Loged In");
       dispatch(fetchUsers());
-      setCurrentUserAuthId(response.user.uid);
+      dispatch(setCurrentUserAuthId(response.user.uid));
       nav("/show_expense");
     }).catch((error) => {
       Toast("danger", error.message);
