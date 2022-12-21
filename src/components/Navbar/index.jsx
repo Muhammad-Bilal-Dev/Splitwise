@@ -1,9 +1,7 @@
-import { useContext } from 'react';
 import { Outlet, Link } from "react-router-dom";
+import { useSelector } from "react-redux"
 
 import "./Navbar.css";
-import { currentUserAuthIdContext } from "../../App";
-
 
 const Navbar = () => {
   const logedInNavItem = [
@@ -18,7 +16,7 @@ const Navbar = () => {
     { title: "Login", path: "/login" }
   ];
 
-  const { currentUserAuthId } = useContext(currentUserAuthIdContext)
+  const currentUserAuthId = useSelector(state => state.currentUser).currentUserAuthId;
 
   return (
     <>
