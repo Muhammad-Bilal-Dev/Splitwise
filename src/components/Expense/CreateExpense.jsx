@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { collection, addDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 import { db } from "../../firebase-config";
 import AddBorrower from "./AddBorrower";
-import { userContext } from "../../App";
 import Input from "../Elements/Input";
 import Toast from "../tostify/Toast";
 
@@ -17,7 +17,7 @@ const CreateExpense = () => {
 
   const [borrowerTotalBill, setBorrowerTotalBill] = useState(0);
   const [borrowers, setBorrowers] = useState([]);
-  const { users } = useContext(userContext);
+  const users = useSelector(state => state.user).users;
 
   const changeHandler = (event) => {
     const { name, value } = event.target;

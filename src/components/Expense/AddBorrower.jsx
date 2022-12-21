@@ -1,9 +1,8 @@
-import { useState, useContext } from "react";
-
-import { userContext } from "../../App";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const AddBorrower = (props) => {
-  const { users } = useContext(userContext);
+  const users = useSelector(state => state.user).users;
   const [borrowerId, setBorrowerId] = useState();
 
   return (
